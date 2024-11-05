@@ -1,0 +1,16 @@
+@page
+@model Lebiru.Announce.Pages.Banner.UpdateModel
+@{
+    ViewData["Title"] = "Update Announcement Banner";
+}
+
+<h1>Update Announcement Banner</h1>
+
+<form method="post">
+    <label for="message">Banner Message:</label><br/>
+    <textarea id="message" name="Message" rows="4" cols="50">@Model.Message</textarea><br/><br/>
+    <button type="submit" asp-page-handler="SetBanner">Set Banner</button>
+    <button type="submit" asp-page-handler="ClearBanner">Clear Banner</button>
+</form>
+
+<p>Use the form above to set or remove the announcement banner displayed at the top of the main page.</p>

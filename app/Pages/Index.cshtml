@@ -1,0 +1,51 @@
+@page
+@model Lebiru.Announce.Pages.IndexModel
+@{
+    ViewData["Title"] = "Announcements";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements</title>
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+    <header>
+        <h1>Announcement Board</h1>
+        @if (!string.IsNullOrEmpty(Model.BannerMessage))
+        {
+            <div class="banner">
+                @Model.BannerMessage
+            </div>
+        }
+    </header>
+    <main>
+        @if (Model.Announcements.Any())
+        {
+            <ul>
+                @foreach (var announcement in Model.Announcements)
+                {
+                    <li>
+                        <h2>@announcement.Title</h2>
+                        <p><small>@announcement.Date.ToString("MMMM dd, yyyy")</small></p>
+                        <div class="content">
+                            @Html.Raw(Markdig.Markdown.ToHtml(announcement.Content)) <!-- Render Markdown as HTML -->
+                        </div>
+                        @if (!string.IsNullOrEmpty(announcement.ImageUrl))
+                        {
+                            <img src="@announcement.ImageUrl" alt="Announcement Image" class="announcement-image"/>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No announcements yet.</p>
+        }
+    </main>
+</body>
+</html>
