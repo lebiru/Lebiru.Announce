@@ -1,2 +1,5 @@
 /app/bin
 /app/obj
+
+# Ignore Visual Studio files
+.vs/
