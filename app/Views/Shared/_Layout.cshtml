@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">Home</a>
+        <a href="/Search">Search</a>
+        <a href="/About" class="navbar-link">About</a>
+    </nav>
+
+    <!-- Banner Section (if needed) -->
+    <header>
+        <h1>@ViewData["HeroTitle"]</h1>
+        @if (!string.IsNullOrEmpty(ViewData["BannerMessage"] as string))
+        {
+            <div class="banner">
+                <div class="marquee">
+                    <span>@ViewData["BannerMessage"]</span>
+                </div>
+            </div>
+        }
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+</body>
+</html>

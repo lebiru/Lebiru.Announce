@@ -1,0 +1,22 @@
+﻿@model List<Lebiru.Announce.Models.Announcement>
+@using Markdig
+
+@if (Model.Any())
+{
+    <ul id="search-result-list">
+        @foreach (var announcement in Model)
+        {
+            <li>
+                <h3>@announcement.Title</h3>
+                <p><small>@announcement.Date.ToString("MMMM dd, yyyy")</small></p>
+                <div class="markdown-content" data-content="@announcement.Content">
+                    @Html.Raw(Markdown.ToHtml(announcement.Content)) <!-- Render Markdown -->
+                </div>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No announcements found.</p>
+}

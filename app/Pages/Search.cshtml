@@ -1,0 +1,62 @@
+﻿@page
+@model Lebiru.Announce.Pages.SearchModel
+@{
+    ViewData["Title"] = "Lebiru.Announce - Search";
+}
+
+<div class="search-container">
+    <input type="text" id="search-bar" placeholder="Search announcements..." oninput="performSearch(this.value)" />
+</div>
+
+<div id="search-results">
+    @if (Model.Results.Any())
+    {
+        <h2>Search Results:</h2>
+        <ul>
+            @foreach (var announcement in Model.Results)
+            {
+                <li>
+                    <h2>@announcement.Title</h2>
+                    <p><small>@announcement.Date.ToString("MMMM dd, yyyy")</small></p>
+                    <div class="content">
+                        @Html.Raw(Markdig.Markdown.ToHtml(announcement.Content))
+                    </div>
+                    @if (!string.IsNullOrEmpty(announcement.ImageUrl))
+                    {
+                        <img src="@announcement.ImageUrl" alt="Announcement Image" class="announcement-image" />
+                    }
+                </li>
+            }
+        </ul>
+    }
+    else if (!string.IsNullOrWhiteSpace(Model.Query))
+    {
+        <p>No announcements found for "<strong>@Model.Query</strong>".</p>
+    }
+</div>
+
+<script>
+    async function performSearch(query) {
+        const response = await fetch(`/Search?handler=Search&query=${encodeURIComponent(query)}`);
+        if (response.ok) {
+            const html = await response.text();
+            document.getElementById("search-results").innerHTML = html;
+            highlightMatches(query);
+        } else {
+            console.error("Error fetching search results:", response.statusText);
+        }
+    }
+
+    function highlightMatches(query) {
+        if (!query) return;
+
+        const regex = new RegExp(`(${query})`, 'gi');
+        const resultItems = document.querySelectorAll('#search-result-list .markdown-content');
+
+        resultItems.forEach(item => {
+            const originalHTML = item.innerHTML;
+            const highlightedHTML = originalHTML.replace(regex, '<span class="highlight">$1</span>');
+            item.innerHTML = highlightedHTML;
+        });
+    }
+</script>

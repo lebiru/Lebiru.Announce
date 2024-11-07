@@ -10,6 +10,7 @@ namespace Lebiru.Announce.Pages
     {
         private readonly AnnouncementService _announcementService;
         private readonly BannerService _bannerService;
+        public string HeroTitle { get; private set; } = "Announcement Board";
 
         public IndexModel(AnnouncementService announcementService, BannerService bannerService)
         {
@@ -29,6 +30,12 @@ namespace Lebiru.Announce.Pages
 
             // Get the banner message, if available
             BannerMessage = _bannerService.GetBanner()?.Message;
+
+            // Check if the environment variable is set and override the title if it is
+            HeroTitle = Environment.GetEnvironmentVariable("FRONT_PAGE_HERO_TITLE") ?? HeroTitle;
+
+            ViewData["HeroTitle"] = HeroTitle; // Set default title for About page
+            ViewData["BannerMessage"] = BannerMessage;   // Optionally, set default banner message or leave null
         }
     }
 }

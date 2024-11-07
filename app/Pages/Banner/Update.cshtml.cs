@@ -24,6 +24,7 @@ namespace Lebiru.Announce.Pages.Banner
             Message = currentBanner?.Message;
         }
 
+        [ValidateAntiForgeryToken] // Ensure CSRF token is validated
         public IActionResult OnPostSetBanner()
         {
             if (!string.IsNullOrWhiteSpace(Message))
@@ -33,6 +34,7 @@ namespace Lebiru.Announce.Pages.Banner
             return RedirectToPage("/Banner/Update");
         }
 
+        [ValidateAntiForgeryToken] // Ensure CSRF token is validated
         public IActionResult OnPostClearBanner()
         {
             _bannerService.ClearBanner();

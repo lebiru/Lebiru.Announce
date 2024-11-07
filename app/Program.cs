@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Lebiru.Announce.Services;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +32,21 @@ builder.Services.AddSingleton<BannerService>(); // Register BannerService
 builder.Services.AddControllers();
 builder.Services.AddRazorPages(); // Add Razor Pages
 
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Lebiru.Announce API", Version = "v1" });
+});
+
 var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 var adminService = app.Services.GetRequiredService<AdminService>();
 
